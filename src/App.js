@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Moon, Sun, Mail, Linkedin, Github, Menu, X, Download, ExternalLink, ArrowLeft, Inbox } from 'lucide-react';
+import { Search, Moon, Sun, Mail, Linkedin, Github, Menu, X, Download, ExternalLink, ArrowLeft,  } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 const Portfolio = () => {
@@ -9,7 +9,6 @@ const Portfolio = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedBlog, setSelectedBlog] = useState(null);
-  const [messages, setMessages] = useState([]);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   useEffect(() => {
@@ -20,12 +19,7 @@ const Portfolio = () => {
     }
   }, [darkMode]);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('contactMessages');
-    if (saved) {
-      setMessages(JSON.parse(saved));
-    }
-  }, []);
+  
 
   const projects = [
     {
