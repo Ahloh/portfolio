@@ -809,36 +809,7 @@ This project taught me about DNS, networking, Linux server administration, and h
     </div>
   );
 
-  const MessagesPage = () => (
-    <div className="max-w-4xl mx-auto px-4 py-16">
-      <div className="flex items-center gap-3 mb-8">
-        <Inbox className="text-blue-600 dark:text-blue-400" size={32} />
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100">Messages</h1>
-      </div>
-      
-      {messages.length === 0 ? (
-        <div className="text-center py-16">
-          <Inbox className="mx-auto text-gray-400 mb-4" size={64} />
-          <p className="text-gray-600 dark:text-gray-400 text-lg">No messages yet</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {messages.map(msg => (
-            <div key={msg.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">{msg.name}</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{msg.email}</p>
-                </div>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{msg.timestamp}</span>
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{msg.message}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  
 
   const renderPage = () => {
     switch(currentPage) {
