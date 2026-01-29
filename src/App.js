@@ -19,8 +19,22 @@ const Portfolio = () => {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+  document.title = 'Christopher Louis | Portfolio';
+}, []);
   
-
+useEffect(() => {
+  const titles = {
+    home: 'Christopher Louis | Portfolio',
+    projects: 'Projects | Christopher Louis',
+    blog: 'Blog | Christopher Louis',
+    about: 'About | Christopher Louis',
+    resume: 'Resume | Christopher Louis',
+    now: 'Now | Christopher Louis',
+    contact: 'Contact | Christopher Louis'
+  };
+  document.title = titles[currentPage] || 'Christopher Louis | Portfolio';
+}, [currentPage]);
   const projects = [
     {
       id: 1,
