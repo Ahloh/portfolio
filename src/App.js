@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Moon, Sun, Mail, Linkedin, Github, Menu, X, Download, ExternalLink, ArrowLeft,  } from 'lucide-react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Search, Moon, Sun, Mail, Linkedin, Github, Menu, X, Download, ExternalLink, ArrowLeft } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 const Portfolio = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPage = location.pathname.slice(1) || 'home';
+  
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,21 +24,18 @@ const Portfolio = () => {
   }, [darkMode]);
 
   useEffect(() => {
-  document.title = 'Christopher Louis | Portfolio';
-}, []);
-  
-useEffect(() => {
-  const titles = {
-    home: 'Christopher Louis | Portfolio',
-    projects: 'Projects | Christopher Louis',
-    blog: 'Blog | Christopher Louis',
-    about: 'About | Christopher Louis',
-    resume: 'Resume | Christopher Louis',
-    now: 'Now | Christopher Louis',
-    contact: 'Contact | Christopher Louis'
-  };
-  document.title = titles[currentPage] || 'Christopher Louis | Portfolio';
-}, [currentPage]);
+    const titles = {
+      home: 'Christopher Louis | Portfolio',
+      projects: 'Projects | Christopher Louis',
+      blog: 'Blog | Christopher Louis',
+      about: 'About | Christopher Louis',
+      resume: 'Resume | Christopher Louis',
+      now: 'Now | Christopher Louis',
+      contact: 'Contact | Christopher Louis'
+    };
+    document.title = titles[currentPage] || 'Christopher Louis | Portfolio';
+  }, [currentPage]);
+
   const projects = [
     {
       id: 1,
@@ -204,13 +205,13 @@ This project taught me about DNS, networking, Linux server administration, and h
         </p>
         <div className="flex gap-4">
           <button
-            onClick={() => setCurrentPage('about')}
+            onClick={() => navigate('/about')}
             className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             About Me
           </button>
           <button
-            onClick={() => setCurrentPage('contact')}
+            onClick={() => navigate('/contact')}
             className="border-2 border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500 px-8 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
           >
             Get in Touch
@@ -817,28 +818,13 @@ This project taught me about DNS, networking, Linux server administration, and h
     </div>
   );
 
-  
-
-  const renderPage = () => {
-    switch(currentPage) {
-      case 'home': return <HomePage />;
-      case 'projects': return <ProjectsPage />;
-      case 'blog': return <BlogPage />;
-      case 'about': return <AboutPage />;
-      case 'resume': return <ResumePage />;
-      case 'now': return <NowPage />;
-      case 'contact': return <ContactPage />;
-      default: return <HomePage />;
-    }
-  };
-
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-950' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'}`}>
       <nav className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <button
-              onClick={() => setCurrentPage('home')}
+              onClick={() => navigate('/')}
               className="relative group"
             >
               <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
@@ -852,7 +838,7 @@ This project taught me about DNS, networking, Linux server administration, and h
                 <button
                   key={item.id}
                   onClick={() => {
-                    setCurrentPage(item.id);
+                    navigate(`/${item.id}`);
                     setSelectedProject(null);
                     setSelectedBlog(null);
                   }}
@@ -889,7 +875,7 @@ This project taught me about DNS, networking, Linux server administration, and h
                 <button
                   key={item.id}
                   onClick={() => {
-                    setCurrentPage(item.id);
+                    navigate(`/${item.id}`);
                     setMenuOpen(false);
                     setSelectedProject(null);
                     setSelectedBlog(null);
@@ -916,7 +902,16 @@ This project taught me about DNS, networking, Linux server administration, and h
       </nav>
 
       <main>
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/resume" element={<ResumePage />} />
+          <Route path="/now" element={<NowPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </main>
 
       <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-20">
@@ -943,4 +938,10 @@ This project taught me about DNS, networking, Linux server administration, and h
   );
 };
 
-export default Portfolio;
+const App = () => (
+  <BrowserRouter>
+    <Portfolio />
+  </BrowserRouter>
+);
+
+export default App;
