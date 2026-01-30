@@ -13,7 +13,6 @@ const Portfolio = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedBlog, setSelectedBlog] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   useEffect(() => {
     if (darkMode) {
@@ -153,46 +152,6 @@ This project taught me about DNS, networking, Linux server administration, and h
     { name: 'Now', id: 'now' },
     { name: 'Contact', id: 'contact' }
   ];
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.message) {
-      alert('Please fill in all fields');
-      return;
-    }
-
-    const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      message: formData.message
-    };
-
-    try {
-      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          service_id: 'service_n9v20m4',
-          template_id: 'template_n6kagem',
-          user_id: 'tupQMaAspfx6bqkNA',
-          template_params: templateParams
-        })
-      });
-
-      if (response.ok) {
-        alert('Message sent successfully! I will get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        throw new Error('Failed to send');
-      }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      alert('Failed to send message. Please try again or email me directly at ppierre5@oldwestbury.edu');
-    }
-  };
 
   const HomePage = () => (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -741,7 +700,50 @@ This project taught me about DNS, networking, Linux server administration, and h
     </div>
   );
 
-  const ContactPage = () => (
+  const ContactPage = () => {
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      if (!formData.name || !formData.email || !formData.message) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message
+      };
+
+      try {
+        const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            service_id: 'service_n9v20m4',
+            template_id: 'template_n6kagem',
+            user_id: 'tupQMaAspfx6bqkNA',
+            template_params: templateParams
+          })
+        });
+
+        if (response.ok) {
+          alert('Message sent successfully! I will get back to you soon.');
+          setFormData({ name: '', email: '', message: '' });
+        } else {
+          throw new Error('Failed to send');
+        }
+      } catch (error) {
+        console.error('Failed to send message:', error);
+        alert('Failed to send message. Please try again or email me directly at ppierre5@oldwestbury.edu');
+      }
+    };
+
+    return (
     <div className="max-w-2xl mx-auto px-4 py-16">
       <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">Get in Touch</h1>
       <p className="text-gray-600 dark:text-gray-300 mb-12 text-lg">
@@ -817,6 +819,7 @@ This project taught me about DNS, networking, Linux server administration, and h
       </div>
     </div>
   );
+  };
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-950' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'}`}>
